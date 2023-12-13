@@ -1,0 +1,44 @@
+{
+  "name": "portal-express-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.ts",
+  "scripts": {
+    "dev": "tsc --project ./tsconfig.build.json --watch & SET NODE_ENV=development nodemon --trace-warnings ./dist/index.js",
+    "build": "tsc --project ./tsconfig.build.json",
+    "start": "yarn run build && SET NODE_ENV=production node --trace-warnings ./dist/index.js",
+    "watch": "tsc --project ./tsconfig.build.json --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/**/*.ts __test__/**/*.test.ts",
+    "lint:fix": "eslint --fix --ext .",
+    "prettier:format": "prettier --write .",
+    "prettier:check": "prettier --check .",
+    "prettier:format:file": "prettier --write ",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:db_push": "prisma db push"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.7.0",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "eslint": "^8.55.0",
+    "prettier": "3.1.1",
+    "prisma": "^5.7.0",
+    "typescript": "^5.3.3"
+  }
+}

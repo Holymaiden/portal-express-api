@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    String @id @default(uuid())
+  name  String @db.VarChar(255)
+  email String @unique @db.VarChar(255)
+  email_verified DateTime?
+  phone_number String
+  role Role @relation(fields: [role_id], references: [id])
+  role_id String
+  suspended_at DateTime? 
+  created_at DateTime
+  updated_at DateTime
+
+  UserCatalog UserCatalog[]
+}
+
+// Role-Base Access Control
+model Role {
+  id   String @id @default(uuid())
+  name String
+  created_at DateTime
+  updated_at DateTime
+  users User[]
+  RolePermission RolePermission[]
+}
+
+model Service {
+  id   String @id @default(uuid())
+  name String
+  platform Platform
+  permissions Permission[]
+  created_at DateTime
+  updated_at DateTime
+}
+
+model Permission {
+  id   String @id @default(uuid())
+  name String
+  service Service @relation(fields: [service_id], references: [id])
+  service_id String
+  created_at DateTime
+  updated_at DateTime
+  RolePermission RolePermission[]
+}
+
+model RolePermission {
+  id   String @id @default(uuid())
+  role Role @relation(fields: [role_id], references: [id])
+  role_id String
+  permission Permission @relation(fields: [permission_id], references: [id])
+  permission_id String
+}
+
+model Otp {
+  id   String @id @default(uuid())
+  phone_number String
+  otp_code String
+  activity String
+  attempts Int
+  created_at DateTime
+  updated_at DateTime
+  expired_at DateTime
+}
+
+enum Platform {
+  WEB
+  MOBILE
+}
+
+// User Catalog
+model UserCatalog {
+  id   String @id @default(uuid())
+  user User @relation(fields: [user_id], references: [id])
+  user_id String
+  service String
+  status Status
+  message String
+  created_at DateTime
+  updated_at DateTime
+}
+
+model Logging {
+  id   String @id @default(uuid())
+  status Status
+  message String
+  created_at DateTime
+  updated_at DateTime
+}
+
+enum Status {
+  SUCCESS
+  FAILED
+  PENDING
+}
