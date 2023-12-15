@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken";
 
-import { SignInEmailRequest, SignUpEmailRequest } from "../interfaces/auth.types";
+import {
+  SignInEmailRequest,
+  SignUpEmailRequest,
+} from "../interfaces/auth.types";
 import { TypedRequest } from "src/types/types";
 import httpstatus from "../config/http-status";
 import logger from "../utils/logger.utils";
@@ -251,6 +254,7 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
     await FindRefreshToken(refreshToken);
 
   const { verify } = jwt;
+
   if (!refreshTokenData) {
     verify(
       refreshToken,
@@ -265,7 +269,7 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
           });
         }
 
-        await DeleteRefreshTokenByUserId(decoded?.user_id || "");
+        await DeleteRefreshTokenByUserId(decoded?.["user_id"]);
       }
     );
     return res.status(httpstatus.FORBIDDEN).json({
@@ -279,7 +283,7 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
     refreshToken,
     config.JWT.REFRESH_TOKEN.SECRET,
     async (error: VerifyErrors | null, decoded: JwtPayload | undefined) => {
-      if (error || refreshTokenData.user_id !== decoded?.user_id) {
+      if (error || refreshTokenData.user_id !== decoded?.["user_id"]) {
         logger.error(["RefreshTokenController", "refresh token expired", ""]);
         return res.status(httpstatus.FORBIDDEN).json({
           success: false,
@@ -288,10 +292,10 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
         });
       }
 
-      const accessToken = createAccessToken(decoded?.user_id);
-      const newRefreshToken = createRefreshToken(decoded?.user_id);
+      const accessToken = createAccessToken(decoded?.["user_id"]);
+      const newRefreshToken = createRefreshToken(decoded?.["user_id"]);
 
-      await CreateRefreshToken(newRefreshToken, decoded?.user_id);
+      await CreateRefreshToken(newRefreshToken, decoded?.["user_id"]);
 
       res.cookie(config.COOKIE.NAME, newRefreshToken, {
         ...refreshTokenCookieConfig,
@@ -301,7 +305,7 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
       logger.info([
         "RefreshTokenController",
         "refresh token success",
-        decoded?.user_id,
+        decoded?.["user_id"],
       ]);
       return res
         .status(httpstatus.OK)
