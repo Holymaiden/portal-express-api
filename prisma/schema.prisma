@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -22,6 +22,7 @@ model User {
   suspended_at    DateTime? 
   created_at      DateTime @default(now())
   updated_at      DateTime?
+  deleted_at      DateTime?
 
   refreshTokens   RefreshToken[]
   resetToken      ResetToken[]
