@@ -3,7 +3,7 @@ import type {
   SignInEmailRequest,
   SignInPhoneRequest,
   SignUpEmailRequest,
-} from "src/types/auth.types";
+} from "src/interfaces/auth.types";
 
 export const signinEmailSchema = {
   body: Joi.object<SignInEmailRequest>().keys({

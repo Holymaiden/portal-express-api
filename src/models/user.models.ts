@@ -1,5 +1,5 @@
 import prisma from "../config/prisma";
-import { UserInterface } from "../types/user.types";
+import { UserInterface } from "../interfaces/user.types";
 
 interface CreateUser {
   name: string;
@@ -23,6 +23,7 @@ export const FindUserByEmail = async (
       name: true,
       email: true,
       email_verified: true,
+      suspended_at: true,
       phone_number: true,
       password: true,
       role: {
@@ -48,7 +49,9 @@ export const FindUserById = async (
       name: true,
       email: true,
       email_verified: true,
+      suspended_at: true,
       phone_number: true,
+      password: true,
       role: {
         select: {
           id: true,
@@ -72,8 +75,12 @@ export const CreateUser = async ({
       email,
       phone_number,
       password,
-      role_id,
       updated_at: new Date(),
+      role: {
+        connect: {
+          id: role_id,
+        },
+      },
     },
   });
 };
@@ -107,6 +114,17 @@ export const SuspendedUser = async (id: string) => {
     },
     data: {
       suspended_at: new Date(),
+    },
+  });
+};
+
+export const UnsuspendedUser = async (id: string) => {
+  return await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      suspended_at: null,
     },
   });
 };
