@@ -9,6 +9,7 @@ const envSchema = joi.object({
     .valid("development", "production", "test")
     .default("development")
     .required(),
+  CORS_ORIGIN: joi.string().required(),
   SERVER_PORT: joi.number().required(),
   SERVER_HOST: joi.string().required(),
   SERVER_URL: joi.string().required(),
@@ -19,6 +20,7 @@ const envSchema = joi.object({
   REFRESH_TOKEN_SECRET: joi.string().min(8).required(),
   ACCESS_TOKEN_EXPIRATION: joi.string().required().default("1h"),
   REFRESH_TOKEN_EXPIRATION: joi.string().required().default("7d"),
+  REFRESH_TOKEN_COOKIE_NAME: joi.string().required().default("refreshToken"),
 });
 
 const { value: validatedEnv, error } = envSchema
@@ -35,6 +37,9 @@ if (error) {
 
 const config = {
   NODE_ENV: validatedEnv.NODE_ENV,
+  CORS: {
+    ORIGIN: validatedEnv.CORS_ORIGIN,
+  },
   SERVER: {
     PORT: validatedEnv.SERVER_PORT,
     HOST: validatedEnv.SERVER_HOST,
@@ -54,6 +59,9 @@ const config = {
       SECRET: validatedEnv.REFRESH_TOKEN_SECRET,
       EXPIRATION: validatedEnv.REFRESH_TOKEN_EXPIRATION,
     },
+  },
+  COOKIE: {
+    NAME: validatedEnv.REFRESH_TOKEN_COOKIE_NAME,
   },
 } as const;
 

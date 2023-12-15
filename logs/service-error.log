@@ -1,0 +1,11 @@
+2023-12-14 23:21:33 | [ERROR] | SignUpController | password and confirm password does not match | admin1@gmail.com | 
+2023-12-14 23:25:39 | [ERROR] | SignUpController | password and confirm password does not match | admin1@gmail.com | 
+2023-12-14 23:25:52 | [ERROR] | internal server error | admin1@gmail.com | PrismaClientKnownRequestError: 
+Invalid `prisma.user.create()` invocation in
+E:\Kerja\Portal Property\portal-express-api\src\models\user.models.ts:69:28
+
+  66   password,
+  67   role_id,
+  68 }: CreateUser) => {
+→ 69   return await prisma.user.create(
+Foreign key constraint failed on the field: `role_id` | 
