@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken";
 
-import { SignInEmailRequest, SignUpEmailRequest } from "../types/auth.types";
+import { SignInEmailRequest, SignUpEmailRequest } from "../interfaces/auth.types";
 import { TypedRequest } from "src/types/types";
 import httpstatus from "../config/http-status";
 import logger from "../utils/logger.utils";
@@ -14,7 +14,7 @@ import {
   DeleteRefreshTokenByUserId,
   FindRefreshToken,
 } from "../models/token.models";
-import { RefreshTokenInterface } from "../types/token.types";
+import { RefreshTokenInterface } from "../interfaces/token.types";
 import {
   clearRefreshTokenCookieConfig,
   refreshTokenCookieConfig,
@@ -23,7 +23,7 @@ import {
   createAccessToken,
   createRefreshToken,
 } from "../utils/generateTokens.util";
-import { UserInterface } from "../types/user.types";
+import { UserInterface } from "../interfaces/user.types";
 
 export const SignUpController = async (
   req: TypedRequest<SignUpEmailRequest>,
