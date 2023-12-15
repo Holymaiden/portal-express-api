@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken";
+import jwt, { Jwt, JwtPayload, VerifyErrors } from "jsonwebtoken";
 
 import {
   SignInEmailRequest,
@@ -259,7 +259,10 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
     verify(
       refreshToken,
       config.JWT.REFRESH_TOKEN.SECRET,
-      async (error: VerifyErrors | null, decoded: JwtPayload | undefined) => {
+      async (
+        error: VerifyErrors | null,
+        decoded: Jwt | JwtPayload | string | undefined
+      ) => {
         if (error) {
           logger.error(["RefreshTokenController", "refresh token expired"]);
           return res.status(httpstatus.FORBIDDEN).json({
@@ -269,7 +272,9 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
           });
         }
 
-        await DeleteRefreshTokenByUserId(decoded?.["user_id"]);
+        typeof decoded === "object" &&
+          "user_id" in decoded &&
+          (await DeleteRefreshTokenByUserId(decoded?.["user_id"]));
       }
     );
     return res.status(httpstatus.FORBIDDEN).json({
@@ -282,8 +287,15 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
   verify(
     refreshToken,
     config.JWT.REFRESH_TOKEN.SECRET,
-    async (error: VerifyErrors | null, decoded: JwtPayload | undefined) => {
-      if (error || refreshTokenData.user_id !== decoded?.["user_id"]) {
+    async (
+      error: VerifyErrors | null,
+      decoded: Jwt | JwtPayload | string | undefined
+    ) => {
+      const user_id =
+        typeof decoded === "object" && "user_id" in decoded
+          ? decoded?.["user_id"]
+          : null;
+      if (error || refreshTokenData.user_id !== user_id) {
         logger.error(["RefreshTokenController", "refresh token expired", ""]);
         return res.status(httpstatus.FORBIDDEN).json({
           success: false,
@@ -292,21 +304,17 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
         });
       }
 
-      const accessToken = createAccessToken(decoded?.["user_id"]);
-      const newRefreshToken = createRefreshToken(decoded?.["user_id"]);
+      const accessToken = createAccessToken(user_id);
+      const newRefreshToken = createRefreshToken(user_id);
 
-      await CreateRefreshToken(newRefreshToken, decoded?.["user_id"]);
+      await CreateRefreshToken(newRefreshToken, user_id);
 
       res.cookie(config.COOKIE.NAME, newRefreshToken, {
         ...refreshTokenCookieConfig,
         httpOnly: false,
       });
 
-      logger.info([
-        "RefreshTokenController",
-        "refresh token success",
-        decoded?.["user_id"],
-      ]);
+      logger.info(["RefreshTokenController", "refresh token success", user_id]);
       return res
         .status(httpstatus.OK)
         .json({ success: true, data: accessToken, message: "ok" });
