@@ -2,7 +2,7 @@
   "name": "portal-express-api",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.ts",
+  "main": "./dist/index.js",
   "scripts": {
     "dev": "tsc --project ./tsconfig.build.json --watch & SET NODE_ENV=development nodemon --trace-warnings ./dist/index.js",
     "build": "tsc --project ./tsconfig.build.json",
