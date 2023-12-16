@@ -1,7 +1,3 @@
 {
-  "outputDirectory": "dist",
-  "builds": [{ "src": "/dist/*.js", "use": "@vercel/node" }],
-  "rewrites": [{ "source": "/src/(.*)", "destination": "/dist" }],
-  "buildCommand": "npm instal && npm run build && node  ./dist/index.js",
-  "devCommand": "tsc --project ./tsconfig.build.json & node --trace-warnings ./dist/index.js"
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
 }
