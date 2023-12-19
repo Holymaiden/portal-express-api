@@ -1,7 +1,6 @@
 {
   "version": 2,
-  "builds": [{ "src": "/dist/*.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "/" }],
-  "rewrites": [{ "source": "/(.*)", "destination": "/dist" }],
-  "buildCommand": "npm run build"
+  "builds": [{ "src": "/src/index.js", "use": "@now/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "/src/index.js" }],
+  "buildCommand": "node src/index.ts"
 }

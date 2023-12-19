@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -15,10 +15,13 @@ model User {
   name            String @db.VarChar(255)
   email           String @unique @db.VarChar(255)
   email_verified  DateTime?
-  phone_number    String
+  phone_number    String @unique @db.VarChar(16)
   role Role       @relation(fields: [role_id], references: [id])
   role_id         String
   password        String
+  company         Company @relation(fields: [company_id], references: [id])
+  company_id      String
+
   suspended_at    DateTime? 
   created_at      DateTime @default(now())
   updated_at      DateTime?
@@ -26,7 +29,7 @@ model User {
 
   refreshTokens   RefreshToken[]
   resetToken      ResetToken[]
-  UserCatalog     UserCatalog[]
+  Otp             Otp[]
 }
 
 // Role-Base Access Control
@@ -68,6 +71,7 @@ model RolePermission {
 
 model Otp {
   id              String @id @default(uuid())
+  user            User     @relation(fields: [phone_number], references: [phone_number])
   phone_number    String
   otp_code        String
   activity        String
@@ -100,20 +104,31 @@ model ResetToken {
   createdAt       DateTime @default(now())
 }
 
-// User Catalog
-model UserCatalog {
-  id            String @id @default(uuid())
-  user User     @relation(fields: [user_id], references: [id])
-  user_id       String
-  service       String
-  status        Status
-  message       String
-  created_at    DateTime @default(now())
-  updated_at    DateTime
+// Company
+model Company {
+  id              String @id @default(uuid())
+  name            String
+  address         String
+
+  expired_at      DateTime?
+  created_at      DateTime @default(now())
+  updated_at      DateTime?
+  deleted_at      DateTime?
+
+  CompanyDetail   CompanyDetail?
+  User            User[]
 }
 
-enum Status {
-  SUCCESS
-  FAILED
-  PENDING
+model CompanyDetail{
+  id              String @id @default(uuid())
+  company         Company @relation(fields: [company_id], references: [id])
+  company_id      String @unique
+  email           String?
+  phone_number    String?
+  logo            String?
+  spr             String? @db.Text
+  spk_mandor      String? @db.Text
+
+  created_at      DateTime @default(now())
+  updated_at      DateTime?
 }

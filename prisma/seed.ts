@@ -16,6 +16,12 @@ const main = async () => {
           name: "admin",
         },
       },
+      company: {
+        create: {
+          name: "Company1",
+          address: "Jl. Raya No. 1",
+        },
+      },
       created_at: new Date(),
     },
   });
