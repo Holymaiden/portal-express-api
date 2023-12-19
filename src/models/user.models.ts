@@ -32,6 +32,7 @@ export const FindUserByEmail = async (
           name: true,
         },
       },
+      deleted_at: true,
     },
   });
 };
@@ -58,6 +59,15 @@ export const FindUserById = async (
           name: true,
         },
       },
+      company: {
+        select: {
+          id: true,
+          name: true,
+          address: true,
+          expired_at: true,
+        },
+      },
+      deleted_at: true,
     },
   });
 };

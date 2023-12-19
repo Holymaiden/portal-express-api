@@ -4,12 +4,19 @@ export interface UserInterface {
   email: string;
   email_verified: Date | null;
   phone_number: string;
-  password?: string;
   suspended_at: Date | null;
+  password?: string;
   role: {
     id: string;
     name: string;
   };
+  company?: {
+    id: string;
+    name: string;
+    address: string;
+    expired_at: Date | null;
+  } | null;
+  deleted_at: Date | null;
 }
 
 export interface UserCreateInterface {

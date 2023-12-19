@@ -142,6 +142,27 @@ export const LoginEmailController = async (
   //       .json({ message: "email not verified" });
   //   }
 
+  if (user.suspended_at) {
+    logger.error(["LoginEmailController", "user suspended", email]);
+    return res.status(httpstatus.NOT_FOUND).json({ message: "user suspended" });
+  }
+
+  if (user.deleted_at) {
+    logger.error(["LoginEmailController", "user deleted", email]);
+    return res.status(httpstatus.NOT_FOUND).json({ message: "user deleted" });
+  }
+
+  if (
+    user.company &&
+    user.company.expired_at &&
+    user.company.expired_at < new Date()
+  ) {
+    logger.error(["LoginEmailController", "company expired", email]);
+    return res
+      .status(httpstatus.UNAUTHORIZED)
+      .json({ message: "company deleted" });
+  }
+
   try {
     const match = bcrypt.compare(password, user.password ?? "");
 

@@ -13,10 +13,10 @@ import {
 } from "../models/user.models";
 import {
   UserCreateInterface,
-  UserInterface,
   UserUpdatePasswordInterface,
   SuspendedUserInterface,
   UnSuspendedUserInterface,
+  UserInterface,
 } from "../interfaces/user.types";
 import { TypedRequest } from "../types/types";
 
@@ -50,6 +50,32 @@ export const FindUserController = async (req: Request, res: Response) => {
         success: false,
         data: null,
         message: "user suspended",
+      });
+    }
+
+    if (user.deleted_at) {
+      logger.error(["FindUserController", "user deleted", `Id: ${id}`]);
+      return res.status(httpstatus.NOT_FOUND).json({
+        success: false,
+        data: null,
+        message: "user not found",
+      });
+    }
+
+    if (
+      user.company &&
+      user.company.expired_at &&
+      user.company.expired_at < new Date()
+    ) {
+      logger.error([
+        "FindUserController",
+        "company expired",
+        `Id: ${id} | company: ${user.company?.id}`,
+      ]);
+      return res.status(httpstatus.UNAUTHORIZED).json({
+        success: false,
+        data: null,
+        message: "company expired",
       });
     }
 
