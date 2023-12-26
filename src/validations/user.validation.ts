@@ -4,7 +4,7 @@ import type {
   UnSuspendedUserInterface,
   UserCreateInterface,
   UserUpdatePasswordInterface,
-} from "src/interfaces/user.types";
+} from "src/interfaces/user.interface";
 
 export const suspendedUserSchema = {
   body: Joi.object<SuspendedUserInterface>().keys({

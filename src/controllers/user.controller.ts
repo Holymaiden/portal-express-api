@@ -17,7 +17,7 @@ import {
   SuspendedUserInterface,
   UnSuspendedUserInterface,
   UserInterface,
-} from "../interfaces/user.types";
+} from "../interfaces/user.interface";
 import { TypedRequest } from "../types/types";
 
 export const FindUserController = async (req: Request, res: Response) => {

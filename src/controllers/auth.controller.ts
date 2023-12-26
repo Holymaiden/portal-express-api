@@ -5,7 +5,7 @@ import jwt, { Jwt, JwtPayload, VerifyErrors } from "jsonwebtoken";
 import {
   SignInEmailRequest,
   SignUpEmailRequest,
-} from "../interfaces/auth.types";
+} from "../interfaces/auth.interface";
 import { TypedRequest } from "src/types/types";
 import httpstatus from "../config/http-status";
 import logger from "../utils/logger.utils";
@@ -17,7 +17,7 @@ import {
   DeleteRefreshTokenByUserId,
   FindRefreshToken,
 } from "../models/token.models";
-import { RefreshTokenInterface } from "../interfaces/token.types";
+import { RefreshTokenInterface } from "../interfaces/token.interface";
 import {
   clearRefreshTokenCookieConfig,
   refreshTokenCookieConfig,
@@ -26,7 +26,7 @@ import {
   createAccessToken,
   createRefreshToken,
 } from "../utils/generateTokens.util";
-import { UserInterface } from "../interfaces/user.types";
+import { UserInterface } from "../interfaces/user.interface";
 
 export const SignUpController = async (
   req: TypedRequest<SignUpEmailRequest>,

@@ -1,5 +1,5 @@
 import prisma from "../config/prisma";
-import { UserInterface } from "../interfaces/user.types";
+import { UserInterface } from "../interfaces/user.interface";
 
 interface CreateUser {
   name: string;
