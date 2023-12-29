@@ -13,6 +13,8 @@ const router = Router();
 
 router.get("/find", userController.FindUserController);
 
+router.get("/check-email/:email", userController.CheckEmailExistController);
+
 router.post(
   "/",
   validate(createUserSchema),

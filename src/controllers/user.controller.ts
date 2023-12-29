@@ -10,6 +10,7 @@ import {
   UpdatePassword,
   SuspendedUser,
   UnsuspendedUser,
+  CheckEmailExist,
 } from "../models/user.models";
 import {
   UserCreateInterface,
@@ -37,7 +38,6 @@ export const FindUserController = async (req: Request, res: Response) => {
   }
 
   try {
-    console.log(id, email);
     const user: UserInterface | null = id
       ? await FindUserById(id)
       : await FindUserByEmail(email as string);
@@ -108,6 +108,49 @@ export const FindUserController = async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error(["FindUserController", "error", error]);
+    return res.status(httpstatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      data: null,
+      message: "internal server error",
+    });
+  }
+};
+
+export const CheckEmailExistController = async (
+  req: Request,
+  res: Response
+) => {
+  const { email } = req.params;
+
+  if (!email) {
+    logger.error(["CheckEmailExistController", "email is required", email]);
+    return res.status(httpstatus.BAD_REQUEST).json({
+      success: false,
+      data: null,
+      message: "email is required",
+    });
+  }
+
+  try {
+    const exist = await CheckEmailExist(email as string);
+
+    if (!exist) {
+      logger.error(["CheckEmailExistController", "email not found", email]);
+      return res.status(httpstatus.NOT_FOUND).json({
+        success: false,
+        data: null,
+        message: "email not found",
+      });
+    }
+
+    logger.info(["CheckEmailExistController", "email found", email]);
+    return res.status(httpstatus.OK).json({
+      success: true,
+      data: true,
+      message: "email found",
+    });
+  } catch (error) {
+    logger.error(["CheckEmailExistController", "error", error]);
     return res.status(httpstatus.INTERNAL_SERVER_ERROR).json({
       success: false,
       data: null,
