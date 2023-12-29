@@ -11,7 +11,7 @@ import * as userController from "../../controllers/user.controller";
 
 const router = Router();
 
-router.get("/:id", userController.FindUserController);
+router.get("/find", userController.FindUserController);
 
 router.post(
   "/",

@@ -21,22 +21,32 @@ import {
 import { TypedRequest } from "../types/types";
 
 export const FindUserController = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { id, email }: { id?: string; email?: string } = req.query;
 
-  if (!id) {
-    logger.error(["FindUserController", "id is required", `Id: ${id}`]);
+  if (!id && !email) {
+    logger.error([
+      "FindUserController",
+      "params is required",
+      `params: ${id || email}`,
+    ]);
     return res.status(httpstatus.BAD_REQUEST).json({
       success: false,
       data: null,
-      message: "id is required",
+      message: "params is required",
     });
   }
 
   try {
-    const user: UserInterface | null = await FindUserById(id);
-
+    console.log(id, email);
+    const user: UserInterface | null = id
+      ? await FindUserById(id)
+      : await FindUserByEmail(email as string);
     if (!user) {
-      logger.error(["FindUserController", "user not found", `Id: ${id}`]);
+      logger.error([
+        "FindUserController",
+        "user not found",
+        `params: ${id || email}`,
+      ]);
       return res.status(httpstatus.NOT_FOUND).json({
         success: false,
         data: null,
@@ -45,7 +55,11 @@ export const FindUserController = async (req: Request, res: Response) => {
     }
 
     if (user.suspended_at) {
-      logger.error(["FindUserController", "user suspended", `Id: ${id}`]);
+      logger.error([
+        "FindUserController",
+        "user suspended",
+        `params: ${id || email}`,
+      ]);
       return res.status(httpstatus.NOT_FOUND).json({
         success: false,
         data: null,
@@ -54,7 +68,11 @@ export const FindUserController = async (req: Request, res: Response) => {
     }
 
     if (user.deleted_at) {
-      logger.error(["FindUserController", "user deleted", `Id: ${id}`]);
+      logger.error([
+        "FindUserController",
+        "user deleted",
+        `params: ${id || email}`,
+      ]);
       return res.status(httpstatus.NOT_FOUND).json({
         success: false,
         data: null,
@@ -63,6 +81,7 @@ export const FindUserController = async (req: Request, res: Response) => {
     }
 
     if (
+      id &&
       user.company &&
       user.company.expired_at &&
       user.company.expired_at < new Date()
@@ -70,7 +89,7 @@ export const FindUserController = async (req: Request, res: Response) => {
       logger.error([
         "FindUserController",
         "company expired",
-        `Id: ${id} | company: ${user.company?.id}`,
+        `params: ${id || email} | company: ${user.company?.id}`,
       ]);
       return res.status(httpstatus.UNAUTHORIZED).json({
         success: false,
@@ -81,7 +100,7 @@ export const FindUserController = async (req: Request, res: Response) => {
 
     delete user.password;
 
-    logger.info(["FindUserController", "user found", `Id: ${id}`]);
+    logger.info(["FindUserController", "user found", `params: ${id || email}`]);
     return res.status(httpstatus.OK).json({
       success: true,
       data: user,
