@@ -19,14 +19,17 @@ const logger = createLogger({
       }`;
     })
   ),
-  transports: [
-    new transports.Console({ level: "error" }),
-    new transports.File({
-      filename: "logs/service-error.log",
-      level: "error",
-    }),
-    new transports.File({ filename: "logs/service.log" }),
-  ],
+  transports:
+    config.NODE_ENV === "production"
+      ? [
+          new transports.Console({ level: "error" }),
+          new transports.File({
+            filename: "logs/service-error.log",
+            level: "error",
+          }),
+          new transports.File({ filename: "logs/service.log" }),
+        ]
+      : [],
 });
 
 export default logger;

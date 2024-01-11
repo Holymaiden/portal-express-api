@@ -10,7 +10,11 @@ import authLimiter from "./middlewares/authLimiter.middleware";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
 import { xssMiddleware } from "./middlewares/xss.middleware";
 import logger from "./middlewares/logger.middleware";
-import { authRouter, userRouter } from "./routes/v1/index.routes";
+import {
+  authRouter,
+  userRouter,
+  pegawaiRouter,
+} from "./routes/v1/index.routes";
 
 const app: Express = express();
 
@@ -45,6 +49,7 @@ if (config.NODE_ENV === "production") {
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/pegawai", pegawaiRouter);
 
 app.use(errorHandler);
 

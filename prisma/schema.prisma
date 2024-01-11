@@ -16,7 +16,7 @@ model User {
   email           String @unique @db.VarChar(255)
   email_verified  DateTime?
   phone_number    String @unique @db.VarChar(16)
-  role Role       @relation(fields: [role_id], references: [id])
+  role            Role       @relation(fields: [role_id], references: [id])
   role_id         String
   password        String
   company         Company? @relation(fields: [company_id], references: [id])
@@ -30,6 +30,7 @@ model User {
   refreshTokens   RefreshToken[]
   resetToken      ResetToken[]
   Otp             Otp[]
+  Pegawai         Pegawai[]
 }
 
 // Role-Base Access Control
@@ -131,4 +132,65 @@ model CompanyDetail{
 
   created_at      DateTime @default(now())
   updated_at      DateTime?
+}
+
+// Pegawai
+model Pegawai{
+  id              String @id @default(uuid())
+  name            String
+  email           String
+  phone_number    String
+  gender          Gender
+  rek             String?
+  date_of_birth   DateTime
+  place_of_birth  String
+  religion        Religion
+  married_status  Married
+  blood_type      String
+  father_name     String
+  mother_name     String
+  province        String
+  city            String
+  district        String
+  sub_district    String
+  rt              String
+  rw              String
+  postal_code     String
+  address         String
+  picture         String?
+  bank_name       String
+  bank_rekening   String
+  bank_account    String
+  job_status      String
+  job_pic         String?
+  job_start_date  DateTime
+  job_end_date    DateTime?
+
+  user            User? @relation(fields: [user_id], references: [id])
+  user_id         String?
+
+  created_at      DateTime @default(now())
+  updated_at      DateTime?
+  deleted_at      DateTime?
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Religion {
+  ISLAM
+  KRISTEN
+  KATOLIK
+  HINDU
+  BUDHA
+  KONGHUCU
+  LAIN
+}
+
+enum Married {
+  Single
+  Married
+  Widowed
 }
