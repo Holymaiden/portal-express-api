@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
-import httpStatus from "../config/http-status";
+import httpStatus from "@/config/http-status";
 import Joi, { type ObjectSchema } from "joi";
-import type { RequireAtLeastOne } from "../types/types";
+import type { RequireAtLeastOne } from "@/types/types";
 
 type RequestValidationSchema = RequireAtLeastOne<
   Record<"body" | "query" | "params", ObjectSchema>

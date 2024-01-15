@@ -4,17 +4,17 @@ import helmet from "helmet";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 
-import config from "./config/config";
-import compressFilter from "./utils/compressFilter.util";
-import authLimiter from "./middlewares/authLimiter.middleware";
-import { errorHandler } from "./middlewares/errorHandler.middleware";
-import { xssMiddleware } from "./middlewares/xss.middleware";
-import logger from "./middlewares/logger.middleware";
+import config from "@/config/config";
+import compressFilter from "@/utils/compressFilter.util";
+import authLimiter from "@/middlewares/authLimiter.middleware";
+import { errorHandler } from "@/middlewares/errorHandler.middleware";
+import { xssMiddleware } from "@/middlewares/xss.middleware";
+import logger from "@/middlewares/logger.middleware";
 import {
   authRouter,
   userRouter,
   pegawaiRouter,
-} from "./routes/v1/index.routes";
+} from "@/routes/v1/index.routes";
 
 const app: Express = express();
 

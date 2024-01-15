@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 
-import httpstatus from "../config/http-status";
-import logger from "../utils/logger.utils";
+import httpstatus from "@/config/http-status";
+import logger from "@/utils/logger.utils";
 import {
   CreateUser,
   FindUserById,
@@ -11,15 +11,15 @@ import {
   SuspendedUser,
   UnsuspendedUser,
   CheckEmailExist,
-} from "../models/user.models";
+} from "@/models/user.models";
 import {
   UserCreateInterface,
   UserUpdatePasswordInterface,
   SuspendedUserInterface,
   UnSuspendedUserInterface,
   UserInterface,
-} from "../interfaces/user.interface";
-import { TypedRequest } from "../types/types";
+} from "@/interfaces/user.interface";
+import { TypedRequest } from "@/types/types";
 
 export const FindUserController = async (req: Request, res: Response) => {
   const { id, email }: { id?: string; email?: string } = req.query;

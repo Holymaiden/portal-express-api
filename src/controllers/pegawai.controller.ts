@@ -1,19 +1,19 @@
 import { Response } from "express";
 
-import httpstatus from "../config/http-status";
-import logger from "../utils/logger.utils";
-import { TypedRequest } from "../types/types";
+import httpstatus from "@/config/http-status";
+import logger from "@/utils/logger.utils";
+import { TypedRequest } from "@/types/types";
 import {
   GetPegawaiById,
   CreatePegawai,
   DeletePegawai,
   GetListPegawai,
   UpdatePegawai,
-} from "../models/pegawai.models";
-import { PegawaiInterface } from "../interfaces/pegawai.interface";
-import { paginate } from "../utils/pagination.util";
-import { PaginationInterface } from "../interfaces/pagination.interface";
-import { setFiles, upload } from "../utils/upload.util";
+} from "@/models/pegawai.models";
+import { PegawaiInterface } from "@/interfaces/pegawai.interface";
+import { paginate } from "@/utils/pagination.util";
+import { PaginationInterface } from "@/interfaces/pagination.interface";
+import { setFiles, upload } from "@/utils/upload.util";
 
 export const GetPegawaiByIdController = async (
   req: TypedRequest<{ id: string }>,

@@ -1,10 +1,10 @@
-import prisma from "../config/prisma";
+import prisma from "@/config/prisma";
 import {
   CompanyCreateInterface,
   CompanyInterface,
   CompanyUpdateWithDetailInterface,
   CompanyWithDetailInterface,
-} from "../interfaces/company.interface";
+} from "@/interfaces/company.interface";
 
 export const FindCompanyById = async (
   id: string

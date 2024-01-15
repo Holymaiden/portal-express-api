@@ -3,8 +3,8 @@ import moment from "moment";
 import {
   ListPegawaiInterface,
   PegawaiInterface,
-} from "../interfaces/pegawai.interface";
-import prisma from "../config/prisma";
+} from "@/interfaces/pegawai.interface";
+import prisma from "@/config/prisma";
 
 export const GetListPegawai = async (
   page: number = 1,

@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { PegawaiInterface } from "src/interfaces/pegawai.interface";
+import { PegawaiInterface } from "@/interfaces/pegawai.interface";
 
 export const CreatePegawaiSchema = {
   body: Joi.object<PegawaiInterface>().keys({

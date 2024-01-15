@@ -3,6 +3,9 @@
   "compilerOptions": {
     "types": ["jest", "node"],
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "esModuleInterop": true,
     "module": "commonjs"
   },

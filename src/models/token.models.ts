@@ -1,5 +1,5 @@
-import prisma from "../config/prisma";
-import { RefreshTokenInterface } from "../interfaces/token.interface";
+import prisma from "@/config/prisma";
+import { RefreshTokenInterface } from "@/interfaces/token.interface";
 
 export const CreateRefreshToken = async (token: string, userId: string) => {
   return await prisma.refreshToken.create({

@@ -1,13 +1,13 @@
 import { Router } from "express";
 
-import validate from "../../middlewares/validate.middleware";
+import validate from "@/middlewares/validate.middleware";
 import {
   createUserSchema,
   suspendedUserSchema,
   unsuspendedUserSchema,
   updateUserPasswordSchema,
-} from "../../validations/user.validation";
-import * as userController from "../../controllers/user.controller";
+} from "@/validations/user.validation";
+import * as userController from "@/controllers/user.controller";
 
 const router = Router();
 
