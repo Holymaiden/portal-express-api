@@ -31,6 +31,7 @@ model User {
   resetToken      ResetToken[]
   Otp             Otp[]
   Pegawai         Pegawai[]
+  Pekerja         Pekerja[]
 }
 
 // Role-Base Access Control
@@ -193,4 +194,19 @@ enum Married {
   Single
   Married
   Widowed
+}
+
+// Model Pekerja
+model Pekerja {
+  id              String @id @default(uuid())
+  name            String
+  address         String?
+  phone_number    String
+
+  user            User? @relation(fields: [user_id], references: [id])
+  user_id         String?
+
+  created_at      DateTime @default(now())
+  updated_at      DateTime?
+  deleted_at      DateTime?
 }

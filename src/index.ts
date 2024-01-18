@@ -14,6 +14,7 @@ import {
   authRouter,
   userRouter,
   pegawaiRouter,
+  pekerjaRouter,
 } from "@/routes/v1/index.routes";
 
 const app: Express = express();
@@ -27,7 +28,7 @@ app.use(express.json());
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 
-// secure from xss atacks
+// secure from xss attacks
 app.use(xssMiddleware());
 
 app.use(cookieParser());
@@ -50,6 +51,7 @@ if (config.NODE_ENV === "production") {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/pegawai", pegawaiRouter);
+app.use("/api/v1/pekerja", pekerjaRouter);
 
 app.use(errorHandler);
 
